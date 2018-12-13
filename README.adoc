@@ -17,6 +17,7 @@
 
 Simple plugin to run `mix test` for your elixir projects.
 
+image::https://github.com/habamax/habamax.github.io/blob/master/assets/gifs/vim-elixir_mix_test.gif[animated screen with mix test]
 // add gif
 
 == Why not?
