@@ -1,0 +1,88 @@
+*elixir_mix_test.txt*  Simple plugin to run all 'mix test' for elixir projects
+
+Author:  Maxim Kim <habamax@gmail.com>
+URL:     https://github.com/habamax/vim-elixir_mix_test
+License: MIT
+
+================================================================================
+
+There is 'vim-test' -- very capable plugin to run tests for multiple dev
+environments including elixir and its mix test, why this planet needs
+'elixir_mix_test' plugin?
+
+I couldn't make vim-test run elixir tests for me... That is a good reason to
+invent a new plugin, because why not?
+
+It should have minimun configuration and just work out of the box:
+
+	just run mix test and show test results in a separate buffer.
+
+
+MAPPINGS                                            *elixir_mix_test-mappings*
+
+There are no default mappings defined for elixir buffers.
+But there is '<Plug>(MixTestRun)' you can map to run all your mix tests.
+
+For example, add following mapping to '~/.vim/after/elixir.vim' file (create
+if needed) to define a mapping only for elixir buffers:
+
+	nmap <buffer> <leader>tt <Plug>(MixTestRun)
+
+Once you run mix tests there should be new window opened with the name like:
+
+	'elixir_project_folder_name' -- mix test output
+
+If your elixir project folder is 'Hello world', the window name should be:
+
+	Hello world -- mix test output
+
+
+This window has following mappings:
+
+<C-n>	- goto next test
+
+<C-p>	- goto previous test
+
+<CR>	- open file under cursor and jump to the line (the same as `gF`)
+
+q		- close mix test output window
+
+
+COMMANDS                                            *elixir_mix_test-commands*
+
+:MixTestRun                                      *elixir_mix_test-:MixTestRun*
+
+Run mix test for the elixir project and show test results in a split window.
+
+Elixir project is defined by a nearest to the current buffer upwards location
+of the 'mix.exs' file.
+
+For example, if you are editing 'advent/day5/lib/day5.ex' file 
+
+	advent/
+	│ day1/
+	│ day2/
+	│ day3/
+	│ day4/
+	│ day5/
+	│ │ _build/
+	│ │ config/
+	│ │ lib/
+	│ │ │ day5.ex
+	│ │ test/
+	│ │ │ day5_test.exs
+	│ │ │ test_helper.exs
+	│ │ .formatter.exs
+	│ │ .gitignore
+	│ │ README.md
+	│ │ mix.exs
+
+Then elixir project would be 'day5'.
+
+SETTINGS                                            *elixir_mix_test-settings*
+
+No settings yet.
+
+
+
+vim:tw=78:ts=4:ft=help:
