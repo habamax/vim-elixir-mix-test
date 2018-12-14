@@ -56,11 +56,13 @@ fun! elixir_mix_test#run_tests()
 	syntax match MixTestDoctestFailed /\v^\s*\zsDoctest failed/
 	syntax match MixTestTestFailed /\v^\s*\zsAssertion with .* failed/
 	syntax match MixTestFinished /\v^Finished in \d+\.\d+ seconds$/
-	syntax match MixTestResults /\v^\d+ doctest%[s], \d+ test%[s], \d+ failures$/
-	syntax match MixTestResults /\v^\d+ doctest%[s], \d+ failures$/
-	syntax match MixTestResults /\v^\d+ test%[s], \d+ failures$/
+	syntax match MixTestResults /\v^\d+ doctest%[s], \d+ test%[s], \d+ failure%[s]$/
+	syntax match MixTestResults /\v^\d+ doctest%[s], \d+ failure%[s]$/
+	syntax match MixTestResults /\v^\d+ test%[s], \d+ failure%[s]$/
 	syntax match MixTestRandomized /\v^Randomized with seed \d+$/
 	syntax match MixTestComment /\v^# .*$/
+	syntax match MixTestCompilationErrorMsgTitle /\v^\=\=\s.+\s\=\=$/
+	syntax match MixTestCompilationErrorMsgSubTitle /\v^\*\*\s\(.{-}\)/
 	hi link MixTestAttr Special
 	hi link MixTestDoctestFailed ErrorMsg
 	hi link MixTestTestFailed ErrorMsg
@@ -68,6 +70,8 @@ fun! elixir_mix_test#run_tests()
 	hi link MixTestFinished Comment
 	hi link MixTestRandomized Comment
 	hi link MixTestComment Comment
+	hi link MixTestCompilationErrorMsgTitle Title
+	hi link MixTestCompilationErrorMsgSubTitle ErrorMsg
 
 	" make it async
 	exe 'lcd '. project_root
