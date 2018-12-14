@@ -57,6 +57,8 @@ fun! elixir_mix_test#run_tests()
 	syntax match MixTestTestFailed /\v^\s*\zsAssertion with .* failed/
 	syntax match MixTestFinished /\v^Finished in \d+\.\d+ seconds$/
 	syntax match MixTestResults /\v^\d+ doctest%[s], \d+ test%[s], \d+ failures$/
+	syntax match MixTestResults /\v^\d+ doctest%[s], \d+ failures$/
+	syntax match MixTestResults /\v^\d+ test%[s], \d+ failures$/
 	syntax match MixTestRandomized /\v^Randomized with seed \d+$/
 	syntax match MixTestComment /\v^# .*$/
 	hi link MixTestAttr Special
