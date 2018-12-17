@@ -125,14 +125,15 @@ Output window:
 +
 image::img_README_6.png[]
 
-* `let g:elixir_mix_test_position = "top"`
-+
-Output window:
-+
-image::img_README_7.png[]
-
 * `let g:elixir_mix_test_position = "left"`
 +
 Output window:
 +
 image::img_README_7.png[]
+
+* `let g:elixir_mix_test_position = "top"`
++
+Output window:
++
+image::img_README_8.png[]
+
