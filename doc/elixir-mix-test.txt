@@ -81,8 +81,31 @@ Then elixir project would be 'day5'.
 
 SETTINGS                                            *elixir_mix_test-settings*
 
-No settings yet.
+OUTPUT WINDOW POSITION                            *g:elixir_mix_test_position*
 
+`g:elixir_mix_test_position` controls where the output window will be opened.
+
+`let g:elixir_mix_test_position = "default"`
+	Output window will be opened as a `:new` command.
+
+`let g:elixir_mix_test_position = "left"`
+	Output window will be on the left. Think of 2 commands: `:new` and
+	`:wincmd H`
+
+`let g:elixir_mix_test_position = "right"`
+	Output window will be on the right. Think of 2 commands: `:new` and
+	`:wincmd L`
+
+`let g:elixir_mix_test_position = "top"`
+	Output window will be on the right. Think of 2 commands: `:new` and
+	`:wincmd K`
+
+`let g:elixir_mix_test_position = "bottom"`
+	Output window will be on the right. Think of 2 commands: `:new` and
+	`:wincmd J`
+
+
+Default value: "default"
 
 
 vim:tw=78:ts=4:ft=help:

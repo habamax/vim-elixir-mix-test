@@ -96,3 +96,43 @@ For example, if you are editing `advent/day5/lib/day5.ex` file
 
 Then elixir project would be `day5`.
 
+== Settings
+
+There is only one option available for now: `g:elixir_mix_test_position`.
+It controls where the output window will be created.
+
+Starting from the following windows layout, having cursor on left window:
+
+image::img_README_3.png[]
+
+* `let g:elixir_mix_test_position = "default"`
++
+NOTE: It uses `:new` command to create output window (thus the location depends on `splitbelow`)
++
+Output window:
++
+image::img_README_4.png[]
+
+* `let g:elixir_mix_test_position = "bottom"`
++
+Output window:
++
+image::img_README_5.png[]
+
+* `let g:elixir_mix_test_position = "right"`
++
+Output window:
++
+image::img_README_6.png[]
+
+* `let g:elixir_mix_test_position = "top"`
++
+Output window:
++
+image::img_README_7.png[]
+
+* `let g:elixir_mix_test_position = "left"`
++
+Output window:
++
+image::img_README_7.png[]

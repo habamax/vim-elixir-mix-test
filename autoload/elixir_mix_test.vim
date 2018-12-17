@@ -32,6 +32,16 @@ fun! elixir_mix_test#run_tests()
 		nnoremap <buffer> <C-p> :MixTestPrev<CR>
 
 		let b:mix_project_root = project_root
+
+		if g:elixir_mix_test_position == "top"
+			exe "wincmd K"
+		elseif g:elixir_mix_test_position == "bottom"
+			exe "wincmd J"
+		elseif g:elixir_mix_test_position == "left"
+			exe "wincmd H"
+		elseif g:elixir_mix_test_position == "right"
+			exe "wincmd L"
+		endif
 	else
 		exe bufnr."wincmd w"
 	endif

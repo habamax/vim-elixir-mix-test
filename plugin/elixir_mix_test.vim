@@ -19,6 +19,10 @@ fun! s:set_project_root ()
 	endif
 endfu
 
+if !exists("g:elixir_mix_test_position")
+	let g:elixir_mix_test_position = "default"
+endif
+
 " put into .vim/after/ftplugin/elixir.vim
 " nmap <leader>tt <Plug>(MixTestRun) 
 nnoremap <Plug>(MixTestRun) :MixTestRun<CR>
