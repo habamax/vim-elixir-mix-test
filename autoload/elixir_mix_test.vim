@@ -49,6 +49,8 @@ fun! elixir_mix_test#run_tests()
 	" colorize it
 	syn clear
 
+	syntax include @ElixirSourceHighlight syntax/elixir.vim
+
 	" Test heading
 	syntax cluster MixTestTitleParts contains=MixTestTitleFront,MixTestTitleTail
 	syntax match MixTestTitleFront /\v^\s+\d+\)\s((test|doctest)\s)?/ contains=MixTestTitleNum,MixTestTitleType containedin=@MixTestTitleParts
@@ -62,6 +64,9 @@ fun! elixir_mix_test#run_tests()
 	hi link MixTestTitleType Statement
 	hi link MixTestTitleTail Comment
 
+    syntax region MixTestElixirCode matchgroup=MixTestAttr start="^\s*code:\s*" end="^\ze\s*left:" contains=@ElixirSourceHighlight
+    syntax region MixTestElixirCode matchgroup=MixTestAttr start="^\s*left:\s*" end="^\ze\s*right:" contains=@ElixirSourceHighlight
+    syntax region MixTestElixirCode matchgroup=MixTestAttr start="^\s*right:\s*" end="^\ze\s*stacktrace:" contains=@ElixirSourceHighlight
 	syntax match MixTestAttr /\v^\s*\zs(code|left|right|stacktrace):/
 	syntax match MixTestDoctestFailed /\v^\s*\zsDoctest failed/
 	syntax match MixTestTestFailed /\v^\s*\zsAssertion with .* failed/
