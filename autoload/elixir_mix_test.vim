@@ -59,7 +59,7 @@ fun! elixir_mix_test#run_tests()
 	syntax match MixTestTitleTail /\v\(\d+\)\s\([^()]{-}\)$/ contained containedin=MixTestTitle
 	hi link MixTestTitle Title
 	hi link MixTestTitleNum Statement
-	hi link MixTestTitleType Type
+	hi link MixTestTitleType Statement
 	hi link MixTestTitleTail Comment
 
 	syntax match MixTestAttr /\v^\s*\zs(code|left|right|stacktrace):/
