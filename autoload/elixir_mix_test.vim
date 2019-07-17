@@ -1,3 +1,19 @@
+fun! s:mix_test(test_buf)
+	if exists('*job_start')
+		if has('win32')
+			let cmd = &shell . ' ' . &shellcmdflag . ' mix test'
+		else
+			let cmd = split(&shell) + split(&shellcmdflag) + ['mix test']
+		endif
+		let job = job_start(cmd, {
+					\ 'out_io': 'buffer',
+					\ 'out_name': a:test_buf
+					\ })
+	else
+		silent %!mix test
+	endif
+endfu
+
 fun! elixir_mix_test#run_tests()
 	let project_root = s:project_root()
 	let current_buf = bufwinnr("%")
@@ -19,6 +35,9 @@ fun! elixir_mix_test#run_tests()
 		setl buftype=nofile
 		setl bufhidden=hide
 		setl noswapfile
+
+		" delete previous contents
+		%d_
 
 		" to be able to `gf` filenames like (mostly for Windows):
 		"        lib/day5.ex:15: Day5 (module)
@@ -44,6 +63,8 @@ fun! elixir_mix_test#run_tests()
 		endif
 	else
 		exe bufnr."wincmd w"
+		" delete previous contents
+		%d_
 	endif
 
 	" colorize it
@@ -64,9 +85,9 @@ fun! elixir_mix_test#run_tests()
 	hi link MixTestTitleType Statement
 	hi link MixTestTitleTail Comment
 
-    syntax region MixTestElixirCode matchgroup=MixTestAttr start="^\s*code:\s*" end="^\ze\s*left:" contains=@ElixirSourceHighlight
-    syntax region MixTestElixirCode matchgroup=MixTestAttr start="^\s*left:\s*" end="^\ze\s*right:" contains=@ElixirSourceHighlight
-    syntax region MixTestElixirCode matchgroup=MixTestAttr start="^\s*right:\s*" end="^\ze\s*stacktrace:" contains=@ElixirSourceHighlight
+	syntax region MixTestElixirCode matchgroup=MixTestAttr start="^\s*code:\s*" end="^\ze\s*left:" contains=@ElixirSourceHighlight
+	syntax region MixTestElixirCode matchgroup=MixTestAttr start="^\s*left:\s*" end="^\ze\s*right:" contains=@ElixirSourceHighlight
+	syntax region MixTestElixirCode matchgroup=MixTestAttr start="^\s*right:\s*" end="^\ze\s*stacktrace:" contains=@ElixirSourceHighlight
 	syntax match MixTestAttr /\v^\s*\zs(code|left|right|stacktrace):/
 	syntax match MixTestDoctestFailed /\v^\s*\zsDoctest failed/
 	syntax match MixTestTestFailed /\v^\s*\zsAssertion with .* failed/
@@ -90,7 +111,8 @@ fun! elixir_mix_test#run_tests()
 
 	" make it async
 	exe 'lcd '. project_root
-	silent %!mix test
+
+	call s:mix_test(test_buf)
 
 	call s:add_help()
 
@@ -98,7 +120,7 @@ fun! elixir_mix_test#run_tests()
 	normal G
 
 	" get back to the buffer we started tests from
-	" exe current_buf."wincmd w"
+	exe current_buf."wincmd w"
 endfu
 
 fun! s:next_test(direction)
