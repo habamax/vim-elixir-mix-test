@@ -1,3 +1,7 @@
+" Not sure how to send buffers to neovim exit callback
+let s:test_bufnr = 0
+let s:current_bufnr = 0
+
 fun! s:mix_test(test_buf)
 	echomsg "mix test ..."
 	if exists('*job_start')
@@ -11,33 +15,55 @@ fun! s:mix_test(test_buf)
 					\ 'out_name': a:test_buf,
 					\ 'exit_cb': function('s:exit'),
 					\ })
+	elseif exists('*jobpid') && exists('*jobstart')
+		let job_id = jobstart('mix test', {
+					\ 'on_stdout': function('s:output'),
+					\ 'on_stderr': function('s:output'),
+					\ 'on_exit': function('s:exit'),
+					\ })
 	else
 		silent %!mix test
+		" we are in a test window -- scroll to bottom
+		normal G
+		" get back to the buffer we started tests from
+		exe bufwinnr(s:current_bufnr)."wincmd w"
 	endif
 endfu
 
-fun! s:exit(job, status) abort
+function! s:output(ch, output, ...) abort
+	call nvim_buf_set_lines(s:test_bufnr, -1, -1, 1, a:output)
+endfunction
+
+fun! s:exit(job, status, ...) abort
+
+	" go to test buffer window
+	if bufwinnr(s:test_bufnr) != -1
+		exe bufwinnr(s:test_bufnr)."wincmd w"
+
+		" we are in a test window -- scroll to bottom
+		normal G
+	endif
+
+	" get back to the buffer we started tests from
+	if bufwinnr(s:current_bufnr) != -1
+		exe bufwinnr(s:current_bufnr)."wincmd w"
+	endif
+
 	echomsg "mix test is finished!"
 endfun
 
 fun! elixir_mix_test#run_tests()
-	let project_root = s:project_root()
-	let current_buf = bufwinnr("%")
+	" save buffer number for neovim job
+	let s:current_bufnr = bufnr("%")
 
-	"" I don't think I like preview window...
-	" let test_buf = fnamemodify(project_root, ':t')." -- mix test output"
-	" exe 'pedit '.test_buf
-	" let bufnr = bufwinnr('^'.test_buf.'$')
-	" exe bufnr."wincmd w"
-	" setl buftype=nofile
-	" setl bufhidden=delete
-	" setl noswapfile
-	" nnoremap <buffer> q <C-w>c
+	let project_root = s:project_root()
 
 	let test_buf = fnamemodify(project_root, ':t')." -- mix test output"
-	let bufnr = bufwinnr('^'.test_buf.'$')
-	if bufnr == -1
+
+	let bufwinnr = bufwinnr('^'.test_buf.'$')
+	if bufwinnr == -1
 		silent exe 'new '. test_buf
+
 		setl buftype=nofile
 		setl bufhidden=hide
 		setl noswapfile
@@ -66,8 +92,9 @@ fun! elixir_mix_test#run_tests()
 		elseif g:elixir_mix_test_position == "right"
 			exe "wincmd L"
 		endif
+
 	else
-		exe bufnr."wincmd w"
+		exe bufwinnr."wincmd w"
 		" delete previous contents
 		%d_
 	endif
@@ -114,18 +141,18 @@ fun! elixir_mix_test#run_tests()
 	hi link MixTestCompilationErrorMsgTitle Title
 	hi link MixTestCompilationErrorMsgSubTitle ErrorMsg
 
-	" make it async
 	exe 'lcd '. project_root
-
-	call s:mix_test(test_buf)
 
 	call s:add_help()
 
-	" scroll to bottom
-	normal G
+	" save buffer number for neovim job
+	let s:test_bufnr = bufnr('%')
 
-	" get back to the buffer we started tests from
-	exe current_buf."wincmd w"
+	" get back to original window where we have started mix test
+	exe bufwinnr(s:current_bufnr)."wincmd w"
+
+	call s:mix_test(test_buf)
+
 endfu
 
 fun! s:next_test(direction)
