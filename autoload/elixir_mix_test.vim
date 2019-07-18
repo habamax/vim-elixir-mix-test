@@ -1,5 +1,6 @@
 fun! s:mix_test(test_buf)
 	if exists('*job_start')
+		echomsg "mix test ..."
 		if has('win32')
 			let cmd = &shell . ' ' . &shellcmdflag . ' mix test'
 		else
@@ -7,12 +8,19 @@ fun! s:mix_test(test_buf)
 		endif
 		let job = job_start(cmd, {
 					\ 'out_io': 'buffer',
-					\ 'out_name': a:test_buf
+					\ 'out_name': a:test_buf,
+					\ 'exit_cb': function('s:exit'),
 					\ })
 	else
+		echomsg "mix test ..."
 		silent %!mix test
+		echomsg "mix test is finished!"
 	endif
 endfu
+
+fun! s:exit(job, status) abort
+	echomsg "mix test is finished!"
+endfun
 
 fun! elixir_mix_test#run_tests()
 	let project_root = s:project_root()
@@ -31,7 +39,7 @@ fun! elixir_mix_test#run_tests()
 	let test_buf = fnamemodify(project_root, ':t')." -- mix test output"
 	let bufnr = bufwinnr('^'.test_buf.'$')
 	if bufnr == -1
-		exe 'new '. test_buf
+		silent exe 'new '. test_buf
 		setl buftype=nofile
 		setl bufhidden=hide
 		setl noswapfile
