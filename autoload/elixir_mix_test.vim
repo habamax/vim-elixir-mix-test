@@ -51,7 +51,6 @@ fun! elixir_mix_test#run_tests()
 		"        lib/day5.ex:15: Day5 (module)
 		setl isfname-=:
 
-		nnoremap <buffer> q <C-w>c
 		nnoremap <buffer> <CR> gF
 		command! -buffer MixTestNext :call <sid>next_test('down')
 		command! -buffer MixTestPrev :call <sid>next_test('up')
@@ -141,12 +140,12 @@ fun! s:next_test(direction)
 endfu
 
 fun! s:add_help()
-	call append(0, "# ----")
+	call append(0, "# -------------------------------------------")
 	call append(1, "# <C-n> - jump to next test")
 	call append(2, "# <C-p> - jump to previous test")
-	call append(3, "# <CR>  - open file under cursor at specified line `lib/hello.ex:5`")
-	call append(4, "# q     - close this window")
-	call append(5, "# ----")
+	call append(3, "# <CR>  - open file under cursor at specified line `lib/filename.ex:5`")
+	call append(4, "# -------------------------------------------")
+
 endfu
 
 fun! s:project_root()
