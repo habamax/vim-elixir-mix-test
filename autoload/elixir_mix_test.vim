@@ -13,7 +13,6 @@ fun! s:mix_test(test_buf)
 					\ })
 	else
 		silent %!mix test
-		echomsg "mix test is finished!"
 	endif
 endfu
 
