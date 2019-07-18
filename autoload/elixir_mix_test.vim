@@ -1,6 +1,6 @@
 fun! s:mix_test(test_buf)
+	echomsg "mix test ..."
 	if exists('*job_start')
-		echomsg "mix test ..."
 		if has('win32')
 			let cmd = &shell . ' ' . &shellcmdflag . ' mix test'
 		else
@@ -12,7 +12,6 @@ fun! s:mix_test(test_buf)
 					\ 'exit_cb': function('s:exit'),
 					\ })
 	else
-		echomsg "mix test ..."
 		silent %!mix test
 		echomsg "mix test is finished!"
 	endif
