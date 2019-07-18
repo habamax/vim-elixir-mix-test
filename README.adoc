@@ -61,8 +61,6 @@ This window has following mappings:
 
 `<CR>`	- open file under cursor and jump to the line (the same as `gF`)
 
-`q`		- close mix test output window
-
 image::img_README_2.png[]
 
 == Commands
